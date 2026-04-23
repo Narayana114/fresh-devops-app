@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fresh-devops-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fresh-devops-app
+  template:
+    metadata:
+      labels:
+        app: fresh-devops-app
+    spec:
+      containers:
+      - name: fresh-devops-app
+        image: 9505176114/fresh-devops-app:v1
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fresh-devops-app-service
+spec:
+  type: NodePort
+  selector:
+    app: fresh-devops-app
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 30080
