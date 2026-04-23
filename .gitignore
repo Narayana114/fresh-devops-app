@@ -1,2 +1,8 @@
 minikube-linux-amd64
+kubectl
+*.log
+node_modules/
 minikube-linux-amd64
+kubectl
+minikube-linux-amd64
+kubectl
