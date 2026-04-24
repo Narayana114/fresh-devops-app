@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: fresh-devops-app
-        image: 9505176114/fresh-devops-app:v1
+        image: 9505176114/real-app:v1
         ports:
         - containerPort: 3000
 ---
