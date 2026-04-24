@@ -1,26 +1,39 @@
-const http = require('http');
+const express = require('express');
 const client = require('prom-client');
 
-const collectDefaultMetrics = client.collectDefaultMetrics;
-collectDefaultMetrics();
+const app = express();
+const PORT = 3000;
 
+// Prometheus metrics
+client.collectDefaultMetrics();
 const requestCounter = new client.Counter({
-  name: 'app_requests_total',
-  help: 'Total number of requests'
+  name: 'ecommerce_requests_total',
+  help: 'Total requests'
 });
 
-const server = http.createServer((req, res) => {
+// Fake products
+const products = [
+  { id: 1, name: "iPhone", price: 999 },
+  { id: 2, name: "Laptop", price: 1200 },
+  { id: 3, name: "Headphones", price: 199 }
+];
 
-  if (req.url === '/metrics') {
-    res.writeHead(200, { 'Content-Type': client.register.contentType });
-    res.end(client.register.metrics());
-    return;
-  }
-
+// Routes
+app.get('/', (req, res) => {
   requestCounter.inc();
-
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Love you ye pichamma ❤️');
+  res.send("🛒 Ecommerce App Running 🚀");
 });
 
-server.listen(3000);
+app.get('/products', (req, res) => {
+  requestCounter.inc();
+  res.json(products);
+});
+
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', client.register.contentType);
+  res.end(await client.register.metrics());
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
